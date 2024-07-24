@@ -17,20 +17,21 @@
         body, html {
             margin: 0;
             padding: 0;
-            height: 100%;
+            min-height: 100vh;
             font-family: Arial, sans-serif;
             background-color: #000;
             color: #fff;
-            overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
         .container {
-            position: relative;
-            height: 100vh;
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
             padding: 20px;
+            box-sizing: border-box;
         }
         .header {
             display: flex;
@@ -51,6 +52,7 @@
             border-radius: 20px;
             text-decoration: none;
             font-weight: bold;
+            margin-top: 20px;
         }
         .title {
             font-size: 4rem;
@@ -69,6 +71,7 @@
             align-items: center;
             height: 50vh;
             perspective: 1000px;
+            margin: 20px 0;
         }
         .image {
             width: 200px;
@@ -83,6 +86,12 @@
             font-size: 2rem;
             animation: bounce 2s infinite;
         }
+        .img {
+            height: 60px;
+        }
+        footer {
+            height: 50px;
+        }
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% {
                 transform: translateY(0);
@@ -94,23 +103,46 @@
                 transform: translateY(-15px);
             }
         }
+        @media (max-width: 768px) {
+            .title {
+                font-size: 3rem;
+            }
+            .image-container {
+                height: 40vh;
+            }
+            .image {
+                width: 150px;
+                height: 225px;
+            }
+        }
+        @media (max-width: 480px) {
+            .title {
+                font-size: 2rem;
+            }
+            .image-container {
+                height: 30vh;
+            }
+            .image {
+                width: 100px;
+                height: 150px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <div class="site-logo"><img src="logo.png"></div>
+            <div class="img"><img src="logo.png" alt="Logo"></div>
         </div>
-        <a href="https://wa.me/message/OWO2OKLJ4TS6M1" class="try-now" >Join Waitlist</a>
-
         <h1 class="title"><span class="dream">Celebrating</span><br><span class="machine">Gifting, Victory & Unity</span></h1>
         <div class="image-container">
             <div class="image" style="background-image: url('img3.png');"></div>
             <div class="image" style="background-image: url('img2.png');"></div>
             <div class="image" style="background-image: url('img1.png');"></div>
         </div>
-        <!-- <div class="arrow">↓</div> -->
+        <a href="https://wa.me/message/OWO2OKLJ4TS6M1" class="try-now">Join Waitlist</a>
     </div>
+    <footer></footer>
 
     <script>
         const images = document.querySelectorAll('.image');
@@ -119,7 +151,7 @@
         function rotateImages() {
             angle += 0.01;
             images.forEach((image, index) => {
-                const radius = 300;
+                const radius = Math.min(window.innerWidth, window.innerHeight) * 0.3;
                 const offset = (2 * Math.PI * index) / images.length;
                 const x = Math.cos(angle + offset) * radius;
                 const z = Math.sin(angle + offset) * radius;
@@ -129,6 +161,12 @@
         }
 
         rotateImages();
+
+        window.addEventListener('resize', () => {
+            // Adjust the perspective and image sizes based on screen size
+            const imageContainer = document.querySelector('.image-container');
+            imageContainer.style.perspective = `${Math.min(window.innerWidth, window.innerHeight)}px`;
+        });
     </script>
 </body>
 </html>
